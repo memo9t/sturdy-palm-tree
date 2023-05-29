@@ -1,0 +1,15 @@
+{{#if block}}
+<h1>usuario block</h1>
+
+{{else}}
+ 
+
+<h1>hola {{user.name}}</h1>
+
+
+<ul>
+    {{#each list}}
+        <li>{{this.name}}({{this.priority}})</li>
+    {{#each}}
+</ul>
+{{/if}}
