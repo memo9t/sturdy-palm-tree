@@ -36,7 +36,7 @@ app.use(cookieParser());
 function verifyToken(req, res, next) {
 	const token = req.cookies.token;
 
-	if (!token) return res.redirect("/index");
+	if (!token) return res.redirect("/");
 
 	jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
 		if (err)
