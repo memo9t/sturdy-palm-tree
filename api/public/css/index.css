@@ -1,0 +1,22 @@
+body {
+	background-color: #343a40;
+	color: #fff;
+}
+
+.navbar-brand {
+	margin-right: auto;
+}
+
+.nav-item {
+	margin-left: 10px;
+}
+
+.btn-primary {
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.btn-secondary {
+	background-color: #6c757d;
+	border-color: #6c757d;
+}

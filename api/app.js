@@ -10,12 +10,13 @@ import cookieParser from "cookie-parser";
 import { Cuenta } from "./models/cuenta.js";
 import { Transferencia } from "./models/transferencia.js";
 
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-//const bodyParser = require('body-parser');
-
-dotenv.config();
-const app = express();
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -33,17 +34,37 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.use(cookieParser());
 
+app.get("API/hola", (req, res) => {
+	res.json({ message: "Bienvenido a la API de usuarios" });
+});
+
 function verifyToken(req, res, next) {
 	const token = req.cookies.token;
 	if (!token) return res.redirect("/");
 
 	jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
 		if (err)
-			return res.redirect("/login");
+			{return res.redirect("/login");}
 		req.userId = decoded.id;
 		next();
 	});
 }
+
+app.get("/API/authenticated", (req, res) => {
+	console.log("req.cookies: ", req.cookies);
+	const token = req.cookies.token;
+	if (token) {
+		jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+			if (err) {
+				res.json({ authenticated: false });
+			} else {
+				res.json({ authenticated: true });
+			}
+		});
+	} else {
+		res.json({ authenticated: false });
+	}
+});
 
 app.get("/", verifyToken, (req, res) => {
 	res.render("index");
@@ -204,7 +225,6 @@ app.post("/API/transferencia", verifyToken, async (req, res) => {
 	});
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });
