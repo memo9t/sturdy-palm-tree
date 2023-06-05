@@ -185,7 +185,7 @@ app.get("/API/cuenta/:id", verifyToken, async (req, res) => {
 });
 
 app.post("/API/transferencia", verifyToken, async (req, res) => {
-	const { emisor_id, receptor_id, monto, descripcion } = req.body; // incluir descripcion
+	const { emisor_id, receptor_id, monto, descripcion } = req.body; 
 
 	const cuentaEmisor = await Cuenta.findOne({ usuario_id: emisor_id });
 	const cuentaReceptor = await Cuenta.findOne({ usuario_id: receptor_id });
@@ -215,7 +215,6 @@ app.post("/API/transferencia", verifyToken, async (req, res) => {
 		emisor_id,
 		receptor_id,
 		monto,
-		fecha: new Date(),
 		descripcion, 
 	});
 	await transferencia.save();
